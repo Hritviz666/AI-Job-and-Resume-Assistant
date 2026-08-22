@@ -2,6 +2,12 @@ from pydantic import BaseModel, Field
 
 
 class ResumeAnalysis(BaseModel):
+
+    Name : str | None = Field(
+        default = None,
+        description="Name of person explicitly mentioned in resume"
+    )
+
     skills: list[str] | None = Field(
         default=None,
         description="Skills explicitly mentioned in the resume"
