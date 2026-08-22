@@ -25,6 +25,10 @@ Rules:
     ),
     (
         "human",
-        "{job_description}"
+        """
+        Job Description
+
+        {job_description}
+    """
     )
 ])
