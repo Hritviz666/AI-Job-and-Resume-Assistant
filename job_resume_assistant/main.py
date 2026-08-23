@@ -1,14 +1,29 @@
 from chains.job_chain import job_chain
 from chains.resume_chain import resume_chain
+from tools.skills_matcher import compare_skills
 
-job_description = input(
-    "Paste the job description:\n"
+# job_description = input(
+#     "Paste the job description:\n"
+# )
+
+
+# response = job_chain.invoke({
+#     "job_description": job_description
+# })
+
+result = compare_skills(
+    required_skills=[
+        "Python",
+        "LangChain",
+        "Docker"
+    ],
+    candidate_skills=[
+        "python",
+        "PyTorch"
+    ]
 )
 
-
-response = job_chain.invoke({
-    "job_description": job_description
-})
+print(result)
 
 # resume_text = """
 
@@ -28,7 +43,7 @@ response = job_chain.invoke({
 #     "resume": resume_text
 # })
 
-print(response)
+# print(response)
 
 
 # print("\n--- JOB ANALYSIS ---")
