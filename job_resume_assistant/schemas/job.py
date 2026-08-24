@@ -31,3 +31,14 @@ class JobAnalysis(BaseModel):
         default=None,
         description="Required or preferred educational qualification"
     )
+
+class SkillMatch(BaseModel):
+    matching_skills: list[str] = Field(
+        default_factory=list,
+        description="Skills found in both the job requirements and candidate skills."
+    )
+
+    missing_skills: list[str] = Field(
+        default_factory=list,
+        description="Required job skills not found in the candidate skills."
+    )
