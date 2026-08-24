@@ -1,67 +1,38 @@
-from chains.job_chain import job_chain
-from chains.resume_chain import resume_chain
 from tools.skills_matcher import compare_skills
+from chains.analysis_chain import analysis_chain
+from tools.skill_normalization import normalize_skill
 
-# job_description = input(
-#     "Paste the job description:\n"
-# )
+print(normalize_skill("ML"))
+print(normalize_skill("  GenAI  "))
+print(normalize_skill("Postgres"))
+print(normalize_skill("PyTorch"))
 
-
-# response = job_chain.invoke({
-#     "job_description": job_description
-# })
-
-result = compare_skills(
-    required_skills=[
-        "Python",
-        "LangChain",
-        "Docker"
-    ],
-    candidate_skills=[
-        "python",
-        "PyTorch"
-    ]
+job_description = input(
+    "Paste the job description:\n"
 )
 
-print(result)
 
-# resume_text = """
+resume_text = """
+Name: Alex
 
-# Name: Alex
+Skills:
+Python, ML, Postgres
 
-# Education:
-# B.Tech in Computer Science
+Education:
+B.Tech in Computer Science
 
-# Projects:
-# Built a RAG chatbot
+"""
 
-# Certifications:
-# AWS Certified Cloud Practitioner
-# """
+result = analysis_chain.invoke({
+    "job_description": job_description,
+    "resume": resume_text
+})
 
-# response = resume_chain.invoke({
-#     "resume": resume_text
-# })
+match_result = compare_skills(
+    required_skills=result["job"].required_skills,
+    candidate_skills=result["resume"].skills
+)
 
-# print(response)
+print(match_result.matching_skills)
+print(match_result.missing_skills)
 
-
-# print("\n--- JOB ANALYSIS ---")
-
-# print("\nJob Title:")
-# print(response.job_title)
-
-# print("\nRequired Skills:")
-# print(response.required_skills)
-
-# print("\nPreferred Skills:")
-# print(response.preferred_skills)
-
-# print("\nResponsibilities:")
-# print(response.responsibilities)
-
-# print("\nExperience:")
-# print(response.experience_level)
-
-# print("\nEducation:")
-# print(response.education)
