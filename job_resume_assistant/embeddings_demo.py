@@ -11,9 +11,14 @@ embedding_model = OpenAIEmbeddings(
     model="text-embedding-3-small"
 )
 
-text = "I build machine learning applications."
+text_1 = "Machine learning engineer"
+text_2 = "Artificial intelligence engineer"
 
-embedding = embedding_model.embed_query(text)
+embedding_1 = embedding_model.embed_query(text_1)
+embedding_2 = embedding_model.embed_query(text_2)
 
-print(embedding[:10])
-print("Dimensions:", len(embedding))
+similarity = sum(
+    a * b for a, b in zip(embedding_1, embedding_2)
+)
+
+print("Similarity:", similarity)
