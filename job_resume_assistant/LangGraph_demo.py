@@ -5,36 +5,59 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class JobState(TypedDict):
-    job_title: str
+    matched_skills: list[str]
     message: str
 
 
-def analyze_job(state: JobState):
+def match_skills(state: JobState):
     return {
-        "message": f"Analyzing job: {state['job_title']}"
+        "matched_skills": ["Python", "SQL"]
     }
 
 
-def generate_result(state: JobState):
+def good_match(state: JobState):
     return {
-        "message": state["message"] + " → Analysis complete"
+        "message": "Candidate has a good skill match."
     }
+
+
+def weak_match(state: JobState):
+    return {
+        "message": "Candidate needs more skill development."
+    }
+
+
+def decide_match(state: JobState):
+    if len(state["matched_skills"]) >= 2:
+        return "good_match"
+
+    return "weak_match"
 
 
 builder = StateGraph(JobState)
 
-builder.add_node("analyze_job", analyze_job)
-builder.add_node("generate_result", generate_result)
+builder.add_node("match_skills", match_skills)
+builder.add_node("good_match", good_match)
+builder.add_node("weak_match", weak_match)
 
-builder.add_edge(START, "analyze_job")
-builder.add_edge("analyze_job", "generate_result")
-builder.add_edge("generate_result", END)
+builder.add_edge(START, "match_skills")
+
+builder.add_conditional_edges(
+    "match_skills",
+    decide_match,
+    {
+        "good_match": "good_match",
+        "weak_match": "weak_match"
+    }
+)
+
+builder.add_edge("good_match", END)
+builder.add_edge("weak_match", END)
 
 graph = builder.compile()
 
-
 result = graph.invoke({
-    "job_title": "AI Engineer",
+    "matched_skills": [],
     "message": ""
 })
 
