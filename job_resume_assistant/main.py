@@ -1,6 +1,6 @@
 from tools.skills_matcher import compare_skills
 from chains.analysis_chain import analysis_chain
-
+from services.score_service import calculate_skill_score
 
 job_description = input(
     "Paste the job description:\n"
@@ -27,6 +27,13 @@ required_match = compare_skills(
     target_skills=result["job"].required_skills,
     candidate_skills=result["resume"].skills
 )
+
+score = calculate_skill_score(
+    matching=required_match.matching_skills,
+    required=result["job"].required_skills or []
+)
+
+print(f"Required Skill Match: {score}%")
 
 preferred_match = compare_skills(
     target_skills=result["job"].preferred_skills,
